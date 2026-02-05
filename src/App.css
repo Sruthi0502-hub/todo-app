@@ -1,192 +1,99 @@
 * {
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
-
-html, body, #root {
-  height: 100%;
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
 }
 
 .app {
   display: flex;
   height: 100vh;
-  background: linear-gradient(135deg, #c77dff, #5a189a);
-  color: #2b2b2b;
 }
 
-.app.dark {
-  background: linear-gradient(135deg, #240046, #10002b);
-  color: #fff;
+/* SIDEBAR */
+.sidebar {
+  width: 240px;
+  padding: 20px;
+  background: linear-gradient(180deg, #9d4edd, #5a189a);
+  color: white;
 }
 
-/* LEFT */
-.todo-container {
-  flex: 1;
-  padding: 40px;
-  background: rgba(255,255,255,0.9);
-  border-radius: 24px;
-  margin: 20px;
+.sidebar h2 {
+  margin-bottom: 20px;
 }
 
-.app.dark .todo-container {
-  background: rgba(0,0,0,0.4);
+.sidebar ul {
+  list-style: none;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.icon-btn {
-  background: none;
-  border: none;
+.sidebar li {
+  padding: 12px;
+  border-radius: 8px;
   cursor: pointer;
-  color: inherit;
+  transition: background 0.2s ease;
 }
 
-.input-box {
+.sidebar li:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* MAIN */
+.main {
+  flex: 1;
+  padding: 30px;
+  background: linear-gradient(135deg, #fdfbff, #f3e8ff);
+}
+
+.main h1 {
+  margin-bottom: 20px;
+}
+
+/* ADD TASK */
+.add-task {
   display: flex;
   gap: 10px;
-  margin: 20px 0;
+  margin-bottom: 20px;
 }
 
-.input-box input {
+.add-task input {
   flex: 1;
   padding: 12px;
-  border-radius: 12px;
-  border: none;
-  outline: none;
+  border-radius: 10px;
+  border: 1px solid #ccc;
 }
 
-.input-box button {
-  padding: 12px 20px;
+.add-task button {
+  padding: 12px 18px;
   border: none;
-  border-radius: 12px;
+  border-radius: 10px;
   background: #7b2cbf;
   color: white;
   cursor: pointer;
 }
 
+/* TASK LIST */
 .task-list {
   list-style: none;
-  padding: 0;
 }
 
 .task-list li {
-  background: #f3e8ff;
-  margin-bottom: 12px;
-  padding: 14px;
-  border-radius: 14px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 10px;
+  padding: 14px;
+  margin-bottom: 12px;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-.app.dark .task-list li {
-  background: #3c096c;
+.task-list li:hover {
+  transform: translateY(-3px);
 }
 
-.task-list li.done span {
+.task-list li.completed {
   text-decoration: line-through;
   opacity: 0.6;
 }
-
-.actions button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  margin-left: 8px;
-  color: inherit;
-}
-
-/* RIGHT */
-.anime-section {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.anime-img {
-  width: 80%;
-  max-width: 450px;
-  border-radius: 24px;
-  animation: float 6s ease-in-out infinite, glow 4s ease-in-out infinite;
-}
-
-/* Animations */
-@keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
-  100% { transform: translateY(0); }
-}
-
-@keyframes glow {
-  0% { box-shadow: 0 0 20px rgba(255,255,255,0.2); }
-  50% { box-shadow: 0 0 40px rgba(255,255,255,0.4); }
-  100% { box-shadow: 0 0 20px rgba(255,255,255,0.2); }
-}
-
-/* MOBILE */
-@media (max-width: 768px) {
-  .app {
-    flex-direction: column;
-  }
-
-  .anime-section {
-    display: none;
-  }
-}
-.check-btn {
-  border: none;
-  background: #e0c3fc;
-  color: #5a189a;
-  font-size: 18px;
-  padding: 8px 12px;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.check-btn.done {
-  background: #7b2cbf;
-  color: white;
-  animation: pop 0.3s ease;
-}
-
-@keyframes pop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.3); }
-  100% { transform: scale(1); }
-}
-.progress-wrapper {
-  margin: 20px 0;
-}
-
-.progress-bar {
-  width: 100%;
-  height: 10px;
-  background: rgba(255,255,255,0.3);
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #c77dff, #7b2cbf);
-  transition: width 0.4s ease;
-}
-
-.progress-wrapper p {
-  margin-top: 6px;
-  font-size: 13px;
-  color: #2d033b;
-}
-.anime-svg {
-  width: 280px;
-  animation: float 6s ease-in-out infinite;
-  filter: drop-shadow(0 0 25px rgba(255,255,255,0.4));
-}
-
