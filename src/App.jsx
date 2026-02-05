@@ -19,6 +19,19 @@ function App() {
     setInput("");
   };
 
+  const completedCount = tasks.filter(t => t.completed).length;
+const progress = tasks.length === 0 ? 0 : (completedCount / tasks.length) * 100;
+
+<div className="progress-wrapper">
+  <div className="progress-bar">
+    <div
+      className="progress-fill"
+      style={{ width: `${progress}%` }}
+    ></div>
+  </div>
+  <p>{completedCount} / {tasks.length} completed</p>
+</div>
+
   const toggleDone = (index) => {
     const updated = [...tasks];
     updated[index].done = !updated[index].done;
@@ -54,12 +67,13 @@ function App() {
             <li key={index} className={task.done ? "done" : ""}>
               <span>{task.text}</span>
               <div className="actions">
-                <button onClick={() => toggleDone(index)}>
-                  <Check />
-                </button>
-                <button onClick={() => deleteTask(index)}>
-                  <Trash2 />
-                </button>
+                <button
+  className={`check-btn ${task.completed ? "done" : ""}`}
+  onClick={() => toggleDone(index)}
+>
+  ✔
+</button>
+
               </div>
             </li>
           ))}
@@ -68,11 +82,24 @@ function App() {
 
       {/* RIGHT SIDE – ANIME */}
       <div className="anime-section">
-        <img
-          src="https://images.unsplash.com/photo-1606112219348-204d7d8b94ee"
-          alt="anime productivity"
-          className="anime-img"
-        />
+        <div className="anime-section">
+  <svg
+    className="anime-svg"
+    viewBox="0 0 200 200"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle cx="100" cy="100" r="80" fill="#9d4edd" />
+    <circle cx="80" cy="90" r="6" fill="#fff" />
+    <circle cx="120" cy="90" r="6" fill="#fff" />
+    <path
+      d="M70 120 Q100 140 130 120"
+      stroke="#fff"
+      strokeWidth="4"
+      fill="none"
+    />
+  </svg>
+</div>
+
       </div>
     </div>
   );

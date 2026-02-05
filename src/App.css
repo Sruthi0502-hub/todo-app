@@ -139,3 +139,54 @@ html, body, #root {
     display: none;
   }
 }
+.check-btn {
+  border: none;
+  background: #e0c3fc;
+  color: #5a189a;
+  font-size: 18px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.check-btn.done {
+  background: #7b2cbf;
+  color: white;
+  animation: pop 0.3s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+.progress-wrapper {
+  margin: 20px 0;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #c77dff, #7b2cbf);
+  transition: width 0.4s ease;
+}
+
+.progress-wrapper p {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #2d033b;
+}
+.anime-svg {
+  width: 280px;
+  animation: float 6s ease-in-out infinite;
+  filter: drop-shadow(0 0 25px rgba(255,255,255,0.4));
+}
+
