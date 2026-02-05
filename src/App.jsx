@@ -1,5 +1,7 @@
 import { useState } from "react";
 import "./App.css";
+import TodoItem from "./components/TodoItem";
+
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -23,10 +25,24 @@ function App() {
       <aside className="sidebar">
         <h2>🎯 Todo</h2>
         <ul>
-          <li>📥 Inbox</li>
-          <li>🌤 Today</li>
-          <li>📅 Upcoming</li>
-        </ul>
+  {todos.map((t) => (
+    <TodoItem
+      key={t.id}
+      todo={t}
+      onToggle={() =>
+        setTodos(
+          todos.map((x) =>
+            x.id === t.id ? { ...x, done: !x.done } : x
+          )
+        )
+      }
+      onDelete={() =>
+        setTodos(todos.filter((x) => x.id !== t.id))
+      }
+    />
+  ))}
+</ul>
+
       </aside>
 
       {/* MAIN */}

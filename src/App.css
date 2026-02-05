@@ -97,3 +97,48 @@
   text-decoration: line-through;
   opacity: 0.6;
 }
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  background: rgba(255,255,255,0.25);
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.check-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid #00ffcc;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.todo-item.completed .check-btn {
+  background: #00ffcc;
+  color: #000;
+}
+
+.todo-item.completed span {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.delete-btn {
+  margin-left: auto;
+  background: transparent;
+  color: #ff4d6d;
+}
