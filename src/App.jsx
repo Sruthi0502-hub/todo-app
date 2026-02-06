@@ -1,84 +1,109 @@
 import { useState } from "react";
 import "./App.css";
-import ProductivityAnime from "./components/ProductivityAnime";
 
+function ProductivityAnime() {
+  return (
+    <img
+      src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZDlqemk2em1jb2JmdjJ1ZHVtZ3A5eHR1ZWZ0eThnY2M2ZTZ2Y2ZrNSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3oriO0OEd9QIDdllqo/giphy.gif"
+      alt="Focus"
+      width="260"
+    />
+  );
+}
 
-function App() {
-  const [tasks, setTasks] = useState([]);
-  const [text, setText] = useState("");
+export default function App() {
+  const [todos, setTodos] = useState([]);
+  const [input, setInput] = useState("");
 
-  const addTask = (e) => {
-    e.preventDefault();
-    if (!text.trim()) return;
+  const addTodo = () => {
+    if (!input.trim()) return;
 
-    setTasks([
-      ...tasks,
-      { id: Date.now(), text, completed: false }
+    setTodos([
+      ...todos,
+      {
+        id: Date.now(),
+        text: input,
+        completed: false,
+      },
     ]);
-    setText("");
+    setInput("");
   };
 
-  const toggleTask = (id) => {
-    setTasks(
-      tasks.map((t) =>
-        t.id === id ? { ...t, completed: !t.completed } : t
+  const toggleTodo = (id) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id
+          ? { ...todo, completed: !todo.completed }
+          : todo
       )
     );
   };
 
-  const deleteTask = (id) => {
-    setTasks(tasks.filter((t) => t.id !== id));
-  };
-
-  const completed = tasks.filter((t) => t.completed).length;
-  const progress = tasks.length === 0 ? 0 : Math.round((completed / tasks.length) * 100);
+  const completedCount = todos.filter((t) => t.completed).length;
+  const progress =
+    todos.length === 0
+      ? 0
+      : Math.round((completedCount / todos.length) * 100);
 
   return (
     <div className="app">
+      {/* LEFT SECTION */}
       <div className="left">
-        <h1>✨ My Todo</h1>
+        <h1 className="title">My Colorful Todo ✨</h1>
 
-        <form onSubmit={addTask}>
+        <div className="input-row">
           <input
             type="text"
-            placeholder="What needs to be done?"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
+            placeholder="Add a new task..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && addTodo()}
           />
-          <button>Add</button>
-        </form>
+          <button onClick={addTodo}>Add</button>
+        </div>
 
         <div className="progress-wrapper">
-          <div className="progress-text">{progress}% completed</div>
+          <div className="progress-label">
+            Progress: {progress}%
+          </div>
           <div className="progress-bar">
             <div
               className="progress-fill"
-              style={{ width: progress + "%" }}
-            />
+              style={{ width: `${progress}%` }}
+            ></div>
           </div>
         </div>
 
-        <ul>
-          {tasks.map((task) => (
-            <li key={task.id} className={task.completed ? "done" : ""}>
-              <span onClick={() => toggleTask(task.id)}>
-                {task.completed ? "✔️" : "⭕"} {task.text}
-              </span>
-              <button onClick={() => deleteTask(task.id)}>🗑</button>
-            </li>
+        <div className="todo-list">
+          {todos.map((todo) => (
+            <div className="todo-item" key={todo.id}>
+              <div
+                className={`todo-text ${
+                  todo.completed ? "completed" : ""
+                }`}
+                onClick={() => toggleTodo(todo.id)}
+              >
+                <span
+                  className={`check ${
+                    todo.completed ? "checked" : ""
+                  }`}
+                >
+                  ✓
+                </span>
+                {todo.text}
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
 
+      {/* RIGHT SECTION */}
       <div className="right">
-  <div className="anime-box">
-    <ProductivityAnime />
-    <p>Focus. Finish. Flow. 🚀</p>
-  </div>
-</div>
-
+        <div className="anime-box">
+          <ProductivityAnime />
+          <p>Focus. Finish. Flow. 🚀</p>
+        </div>
+      </div>
     </div>
   );
 }
-
-export default App;
