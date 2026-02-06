@@ -1,75 +1,82 @@
 import { useState } from "react";
 import "./App.css";
-import TodoItem from "./components/TodoItem";
+import ProductivityAnime from "./components/ProductivityAnime";
 
 
 function App() {
   const [tasks, setTasks] = useState([]);
-  const [input, setInput] = useState("");
+  const [text, setText] = useState("");
 
-  const addTask = () => {
-    if (!input.trim()) return;
-    setTasks([...tasks, { text: input, completed: false }]);
-    setInput("");
+  const addTask = (e) => {
+    e.preventDefault();
+    if (!text.trim()) return;
+
+    setTasks([
+      ...tasks,
+      { id: Date.now(), text, completed: false }
+    ]);
+    setText("");
   };
 
-  const toggleTask = (index) => {
-    const updated = [...tasks];
-    updated[index].completed = !updated[index].completed;
-    setTasks(updated);
+  const toggleTask = (id) => {
+    setTasks(
+      tasks.map((t) =>
+        t.id === id ? { ...t, completed: !t.completed } : t
+      )
+    );
   };
+
+  const deleteTask = (id) => {
+    setTasks(tasks.filter((t) => t.id !== id));
+  };
+
+  const completed = tasks.filter((t) => t.completed).length;
+  const progress = tasks.length === 0 ? 0 : Math.round((completed / tasks.length) * 100);
 
   return (
     <div className="app">
-      {/* SIDEBAR */}
-      <aside className="sidebar">
-        <h2>🎯 Todo</h2>
-        <ul>
-  {todos.map((t) => (
-    <TodoItem
-      key={t.id}
-      todo={t}
-      onToggle={() =>
-        setTodos(
-          todos.map((x) =>
-            x.id === t.id ? { ...x, done: !x.done } : x
-          )
-        )
-      }
-      onDelete={() =>
-        setTodos(todos.filter((x) => x.id !== t.id))
-      }
-    />
-  ))}
-</ul>
+      <div className="left">
+        <h1>✨ My Todo</h1>
 
-      </aside>
-
-      {/* MAIN */}
-      <main className="main">
-        <h1>Today</h1>
-
-        <div className="add-task">
+        <form onSubmit={addTask}>
           <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Add a task..."
+            type="text"
+            placeholder="What needs to be done?"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
           />
-          <button onClick={addTask}>Add</button>
+          <button>Add</button>
+        </form>
+
+        <div className="progress-wrapper">
+          <div className="progress-text">{progress}% completed</div>
+          <div className="progress-bar">
+            <div
+              className="progress-fill"
+              style={{ width: progress + "%" }}
+            />
+          </div>
         </div>
 
-        <ul className="task-list">
-          {tasks.map((task, index) => (
-            <li
-              key={index}
-              className={task.completed ? "completed" : ""}
-              onClick={() => toggleTask(index)}
-            >
-              {task.text}
+        <ul>
+          {tasks.map((task) => (
+            <li key={task.id} className={task.completed ? "done" : ""}>
+              <span onClick={() => toggleTask(task.id)}>
+                {task.completed ? "✔️" : "⭕"} {task.text}
+              </span>
+              <button onClick={() => deleteTask(task.id)}>🗑</button>
             </li>
           ))}
         </ul>
-      </main>
+      </div>
+
+      <div className="right">
+  <div className="anime-box">
+    <ProductivityAnime />
+    <p>Focus. Finish. Flow. 🚀</p>
+  </div>
+</div>
+
     </div>
   );
 }

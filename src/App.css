@@ -5,140 +5,205 @@
   font-family: "Segoe UI", sans-serif;
 }
 
+body {
+  background: linear-gradient(135deg, #6a0dad, #9b5de5, #f15bb5);
+  min-height: 100vh;
+}
+
+/* Layout */
 .app {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
+  color: #fff;
 }
 
-/* SIDEBAR */
-.sidebar {
-  width: 240px;
-  padding: 20px;
-  background: linear-gradient(180deg, #9d4edd, #5a189a);
-  color: white;
+.left {
+  width: 50%;
+  padding: 50px;
 }
 
-.sidebar h2 {
-  margin-bottom: 20px;
-}
-
-.sidebar ul {
-  list-style: none;
-}
-
-.sidebar li {
-  padding: 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.sidebar li:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-/* MAIN */
-.main {
-  flex: 1;
-  padding: 30px;
-  background: linear-gradient(135deg, #fdfbff, #f3e8ff);
-}
-
-.main h1 {
-  margin-bottom: 20px;
-}
-
-/* ADD TASK */
-.add-task {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.add-task input {
-  flex: 1;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-}
-
-.add-task button {
-  padding: 12px 18px;
-  border: none;
-  border-radius: 10px;
-  background: #7b2cbf;
-  color: white;
-  cursor: pointer;
-}
-
-/* TASK LIST */
-.task-list {
-  list-style: none;
-}
-
-.task-list li {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 14px;
-  margin-bottom: 12px;
-  background: white;
-  border-radius: 14px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  cursor: pointer;
-  transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-.task-list li:hover {
-  transform: translateY(-3px);
-}
-
-.task-list li.completed {
-  text-decoration: line-through;
-  opacity: 0.6;
-}
-
-.todo-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px;
-  border-radius: 12px;
-  margin-bottom: 12px;
-  background: rgba(255,255,255,0.25);
-  animation: slideIn 0.3s ease;
-}
-
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.check-btn {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  border: 2px solid #00ffcc;
-  background: transparent;
+.right {
+  width: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Heading */
+h1 {
+  font-size: 40px;
+  margin-bottom: 20px;
+}
+
+/* Form */
+form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+}
+
+button {
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: none;
   cursor: pointer;
-  transition: 0.3s;
+  background: #ffd166;
+  font-weight: bold;
 }
 
-.todo-item.completed .check-btn {
-  background: #00ffcc;
-  color: #000;
+/* Progress */
+.progress-wrapper {
+  margin: 20px 0;
 }
 
-.todo-item.completed span {
+.progress-text {
+  margin-bottom: 6px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00f5d4, #fee440);
+  transition: width 0.4s ease;
+}
+
+/* Todo List */
+ul {
+  list-style: none;
+  margin-top: 20px;
+}
+
+li {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: slideIn 0.4s ease;
+}
+
+li span {
+  cursor: pointer;
+}
+
+li.done span {
   text-decoration: line-through;
   opacity: 0.6;
 }
 
-.delete-btn {
-  margin-left: auto;
-  background: transparent;
-  color: #ff4d6d;
+/* Anime / Animation */
+.anime-box {
+  text-align: center;
+}
+
+.pulse {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #00f5d4, transparent);
+  animation: pulse 2s infinite;
+  margin: auto;
+}
+
+.anime-box p {
+  margin-top: 20px;
+  font-size: 22px;
+}
+
+/* Animations */
+@keyframes pulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+/* SVG Anime */
+.anime-svg {
+  animation: float 4s ease-in-out infinite;
+}
+
+.glow {
+  fill: radial-gradient(circle, #9b5de5, transparent);
+  opacity: 0.4;
+}
+
+.head {
+  fill: #ffd6ff;
+}
+
+.eye {
+  fill: #3a0ca3;
+}
+
+.smile {
+  fill: none;
+  stroke: #3a0ca3;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.body {
+  fill: #cdb4db;
+}
+
+.dot {
+  fill: #00f5d4;
+  animation: pop 2s infinite;
+}
+
+.delay1 {
+  animation-delay: 0.5s;
+}
+
+.delay2 {
+  animation-delay: 1s;
+}
+
+/* Animations */
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes pop {
+  0% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(0.8); }
 }
