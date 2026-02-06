@@ -1,39 +1,35 @@
-import { useEffect, useState } from "react";
-import confetti from "canvas-confetti";
+import { useState } from "react";
 import "./App.css";
 
+const categories = [
+  { name: "Inbox", color: "#ffd166" },
+  { name: "Today", color: "#06d6a0" },
+  { name: "Work", color: "#118ab2" },
+  { name: "Personal", color: "#ef476f" },
+  { name: "Study", color: "#9b5de5" },
+];
+
 export default function App() {
-  const [todos, setTodos] = useState(() => {
-    const saved = localStorage.getItem("todos");
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  const [input, setInput] = useState("");
-  const [dragId, setDragId] = useState(null);
-
-  /* 🔹 SAVE TO LOCAL STORAGE */
-  useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify(todos));
-  }, [todos]);
-
-  /* 🔹 CONFETTI WHEN ALL DONE */
-  useEffect(() => {
-    if (todos.length > 0 && todos.every((t) => t.completed)) {
-      confetti({
-        particleCount: 150,
-        spread: 90,
-        origin: { y: 0.6 },
-      });
-    }
-  }, [todos]);
+  const [todos, setTodos] = useState([]);
+  const [text, setText] = useState("");
+  const [date, setDate] = useState("");
+  const [category, setCategory] = useState("Inbox");
+  const [dark, setDark] = useState(false);
 
   const addTodo = () => {
-    if (!input.trim()) return;
+    if (!text.trim()) return;
     setTodos([
       ...todos,
-      { id: Date.now(), text: input, completed: false },
+      {
+        id: Date.now(),
+        text,
+        date,
+        category,
+        completed: false,
+      },
     ]);
-    setInput("");
+    setText("");
+    setDate("");
   };
 
   const toggleTodo = (id) => {
@@ -44,76 +40,98 @@ export default function App() {
     );
   };
 
-  /* 🔹 DRAG & DROP */
-  const handleDrop = (id) => {
-    const dragItem = todos.find((t) => t.id === dragId);
-    const dropItem = todos.find((t) => t.id === id);
-
-    const dragIndex = todos.indexOf(dragItem);
-    const dropIndex = todos.indexOf(dropItem);
-
-    const updated = [...todos];
-    updated.splice(dragIndex, 1);
-    updated.splice(dropIndex, 0, dragItem);
-
-    setTodos(updated);
-  };
-
-  const completed = todos.filter((t) => t.completed).length;
-  const progress =
-    todos.length === 0 ? 0 : Math.round((completed / todos.length) * 100);
+  const filtered = todos.filter((t) => t.category === category);
+  const completed = filtered.filter((t) => t.completed).length;
+  const progress = filtered.length
+    ? Math.round((completed / filtered.length) * 100)
+    : 0;
 
   return (
-    <div className="app">
-      {/* LEFT */}
-      <div className="left">
-        <h1 className="title">✨ My Todo</h1>
+    <div className={`app ${dark ? "dark" : ""}`}>
+      {/* SIDEBAR */}
+      <aside className="sidebar">
+        <h2>📂 Lists</h2>
+
+        {categories.map((c) => (
+          <div
+            key={c.name}
+            className={`category ${category === c.name ? "active" : ""}`}
+            style={{ borderLeft: `6px solid ${c.color}` }}
+            onClick={() => setCategory(c.name)}
+          >
+            {c.name}
+          </div>
+        ))}
+
+        <button className="theme-btn" onClick={() => setDark(!dark)}>
+          {dark ? "🌞 Day" : "🌙 Night"}
+        </button>
+      </aside>
+
+      {/* MAIN */}
+      <main className="main">
+        <h1>{category}</h1>
 
         <div className="input-row">
           <input
             placeholder="What needs to be done?"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && addTodo()}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+          />
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
           />
           <button onClick={addTodo}>Add</button>
         </div>
 
-        <div className="progress-wrapper">
-          <p>{progress}% completed</p>
-          <div className="progress-bar">
-            <div
-              className="progress-fill"
-              style={{ width: `${progress}%` }}
-            ></div>
+        <div className="progress">
+          <span>{progress}% completed</span>
+          <div className="bar">
+            <div style={{ width: `${progress}%` }} />
           </div>
         </div>
 
         <div className="todo-list">
-          {todos.map((todo) => (
-            <div
-              key={todo.id}
-              className={`todo-item ${todo.completed ? "done" : ""}`}
-              draggable
-              onDragStart={() => setDragId(todo.id)}
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={() => handleDrop(todo.id)}
-              onClick={() => toggleTodo(todo.id)}
-            >
-              <span className="check">
-                {todo.completed ? "✔" : "○"}
-              </span>
-              {todo.text}
-            </div>
-          ))}
-        </div>
-      </div>
+          {filtered.map((t) => {
+            const color = categories.find(
+              (c) => c.name === t.category
+            ).color;
 
-      {/* RIGHT */}
-      <div className="right">
-        <div className="focus-box">
-          <div className="face">😊</div>
-          <p>Focus. Finish. Flow. 🚀</p>
+            return (
+              <div
+                key={t.id}
+                className={`todo ${t.completed ? "done" : ""}`}
+                onClick={() => toggleTodo(t.id)}
+              >
+                <div className="tick">
+                  {t.completed && <span>✓</span>}
+                </div>
+
+                <div className="todo-text">
+                  <p>{t.text}</p>
+                  {t.date && <small>📅 {t.date}</small>}
+                </div>
+
+                <span
+                  className="tag"
+                  style={{ background: color }}
+                />
+              </div>
+            );
+          })}
+        </div>
+      </main>
+
+      {/* ANIME PARALLAX */}
+      <div className="anime">
+        <img
+          src="https://tse1.mm.bing.net/th/id/OIP.0ZHJivkXldzUnLiboVKo2AHaEP?pid=Api&P=0&h=180"
+          alt="anime"
+        />
+        <div className="anime-text">
+          Focus. Finish. Flow 🌊
         </div>
       </div>
     </div>
